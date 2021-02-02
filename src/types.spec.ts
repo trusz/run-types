@@ -5,7 +5,7 @@ import * as types from './types'
 const { describe, it } = mocha
 
 describe('checkType', () => {
-    describe('string', () => {
+    describe('all', () => {
 
         interface TestCase {
             desc: string,
@@ -31,7 +31,27 @@ describe('checkType', () => {
                 desc: 'shape validation',
                 expectedValidity: true,
                 data: { a: 1 },
-                validator: types.shape({ a: types.number }),
+                validator: types.shape({ 
+                    a: types.number 
+                }),
+            },
+            {
+                desc: 'optional',
+                expectedValidity: true,
+                data: { a: 1 },
+                validator: types.shape({
+                    a: types.number, 
+                    b: types.optNumber 
+                }),
+            },
+            {
+                desc: 'union',
+                expectedValidity: true,
+                data: { a: 1, b:'2' },
+                validator: types.and(
+                    types.shape({ a: types.number }),
+                    types.shape({ b: types.string })
+                ),
             },
             {
                 desc: 'array validation simple',
