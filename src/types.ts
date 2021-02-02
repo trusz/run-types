@@ -2,16 +2,12 @@ function typeOf(value: unknown) {
     return Object.prototype.toString.call(value).split(']')[0].split(' ')[1].toLowerCase()
 }
 
-/**
- *
- * @param {unknown} data
- * @return {boolean}
- */
-export function isDefined(data: unknown) {
+export function isDefined(data: unknown): boolean {
     return data !== undefined && data !== null
 }
 
 type Validator = (data: unknown) => boolean;
+
 function makeValidator(type: string): Validator {
     return function validate(data: unknown) {
         return typeOf(data) === type
@@ -44,14 +40,14 @@ export const any: Validator = () => true
 type ObjectDefinition = {[key: string]: Validator}
 
 export function shape(objDef: ObjectDefinition): Validator {
-    return function shapeValidate(obj: any) {
+    return function shapeValidate(obj: unknown) {
         if (!object(obj)) {
             return false
         }
         const defKeys = Object.keys(objDef)
         return defKeys.every((key) => {
             const validate = objDef[key]
-            return validate(obj[key])
+            return validate((obj as {[key:string]: unknown})[key])
         })
     }
 }

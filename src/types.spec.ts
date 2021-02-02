@@ -1,7 +1,6 @@
 import mocha from 'mocha'
 import assert from 'assert'
 import * as types from './types'
-import { type } from 'os'
 
 const { describe, it } = mocha
 
